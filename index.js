@@ -14,7 +14,7 @@ import { prompt } from "@copilot-extensions/preview-sdk";
 const app = express();
 dotenv.config();
 
-const port = Number(process.env.PORT || '59872');
+const port = process.env.PORT || 3000; // 환경 변수 PORT를 사용하고, 기본값으로 3000을 사용
 
 // Middleware to capture raw request body
 app.use(express.json({ limit: '50mb' }));
