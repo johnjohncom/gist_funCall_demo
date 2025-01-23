@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import {ChatResponseMessage} from './messages.js';
+// import {ChatResponseMessage} from './messages.js';
 
 async function verifyAgentRequest(payload, request, GITHUB_KEYS_URI) {
     const signature = request.headers["github-public-key-signature"];
