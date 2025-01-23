@@ -3,7 +3,6 @@
 import express from "express";
 import bodyParser from 'body-parser';
 import dotenv from "dotenv";
-import { verifyAgentRequest } from "./request-verifier.js";
 import { create_gist } from "./createGist.js";
 import { createTextEvent } from "@copilot-extensions/preview-sdk";
 import { createAckEvent } from "@copilot-extensions/preview-sdk";
