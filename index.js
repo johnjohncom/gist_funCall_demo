@@ -32,13 +32,6 @@ app.post('/', async (req, res) => {
     // getting user token from the request
     const token = req.get("X-GitHub-Token");
 
-    // verify the request payload
-    // const rawBody = req.body.toString(utf8);
-    //const result = await verifyAgentRequest(rawBody, req, GITHUB_KEYS_URI);
-
-    // if (result.status) {
-    console.log('Request verified');
-
     // get code context from client request body
     const requestBodyMsgLength = req.body.messages.length;
     console.log(requestBodyMsgLength);
