@@ -78,6 +78,7 @@ app.post('/', async (req, res) => {
 
     // Parse the accumulated data as JSON
     const jsonResponse = JSON.parse(messageString);
+    console.log(jsonResponse);
 
     // Tool call
     const tool_calls = jsonResponse.tool_calls;
