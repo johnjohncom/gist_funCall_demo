@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import dotenv from "dotenv";
 import { create_gist } from "./createGist.js";
 import { createTextEvent } from "@copilot-extensions/preview-sdk";
-import { createAckEvent } from "@copilot-extensions/preview-sdk";
+import { createDoneEvent } from "@copilot-extensions/preview-sdk";
 import { createConfirmationEvent } from "@copilot-extensions/preview-sdk";
 import { prompt } from "@copilot-extensions/preview-sdk";
 
@@ -15,6 +15,7 @@ dotenv.config();
 
 const port = process.env.PORT || 8080; // 환경 변수 PORT를 사용하고, 기본값으로 3000을 사용
 
+const doneEvent = createDoneEvent();
 // Middleware to capture raw request body
 app.use(express.json({ limit: '50mb' }));
 
@@ -97,6 +98,7 @@ app.post('/', async (req, res) => {
                 const status = await create_gist(file_name, argsObj.description, selectedCode);
                 if (status.statusCode === 200) {
                     res.write(createTextEvent("Gist created successfully!"));
+                    response.end(doneEvent);
                 } else {
                     res.write(createTextEvent("Failed to create Gist:" + status.statusCode));
                 }
