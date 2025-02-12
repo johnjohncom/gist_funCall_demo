@@ -4,7 +4,7 @@ import express from "express";
 import bodyParser from 'body-parser';
 import dotenv from "dotenv";
 import { create_gist } from "./createGist.js";
-import { createTextEvent, createConfirmationEvent } from "@copilot-extensions/preview-sdk";
+import { createTextEvent } from "@copilot-extensions/preview-sdk";
 import { prompt } from "@copilot-extensions/preview-sdk";
 
 
@@ -73,13 +73,6 @@ app.post('/', async (req, res) => {
         tool_choice: "required", // "optional" or "required"
     });
 
-    // Check if response has choices or tool_calls
-    if ((!message.choices || message.choices.length === 0) && (!message.tool_calls || message.tool_calls.length === 0)) {
-        console.error("Response contained no choices or tool_calls.");
-        res.status(500).send("Response contained no choices.");
-        return;
-    }
-
     // Convert the message object to a JSON string
     const messageString = JSON.stringify(message);
 
@@ -102,7 +95,6 @@ app.post('/', async (req, res) => {
                 const status = await create_gist(file_name, argsObj.description, selectedCode);
                 if (status.statusCode === 200) {
                     res.write(createTextEvent("Gist created successfully!"));
-                    response.end(doneEvent);
                 } else {
                     res.write(createTextEvent("Failed to create Gist:" + status.statusCode));
                 }
