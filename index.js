@@ -4,9 +4,7 @@ import express from "express";
 import bodyParser from 'body-parser';
 import dotenv from "dotenv";
 import { create_gist } from "./createGist.js";
-import { createTextEvent } from "@copilot-extensions/preview-sdk";
-import { createDoneEvent } from "@copilot-extensions/preview-sdk";
-import { createConfirmationEvent } from "@copilot-extensions/preview-sdk";
+import { createTextEvent, createConfirmationEvent } from "@copilot-extensions/preview-sdk";
 import { prompt } from "@copilot-extensions/preview-sdk";
 
 
@@ -15,7 +13,6 @@ dotenv.config();
 
 const port = process.env.PORT || 8080; // 환경 변수 PORT를 사용하고, 기본값으로 3000을 사용
 
-const doneEvent = createDoneEvent();
 // Middleware to capture raw request body
 app.use(express.json({ limit: '50mb' }));
 
@@ -75,6 +72,13 @@ app.post('/', async (req, res) => {
         ],
         tool_choice: "required", // "optional" or "required"
     });
+
+    // Check if response has choices or tool_calls
+    if ((!message.choices || message.choices.length === 0) && (!message.tool_calls || message.tool_calls.length === 0)) {
+        console.error("Response contained no choices or tool_calls.");
+        res.status(500).send("Response contained no choices.");
+        return;
+    }
 
     // Convert the message object to a JSON string
     const messageString = JSON.stringify(message);
