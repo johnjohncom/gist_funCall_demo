@@ -7,7 +7,6 @@ import { create_gist } from "./createGist.js";
 import { createTextEvent } from "@copilot-extensions/preview-sdk";
 import { prompt } from "@copilot-extensions/preview-sdk";
 
-
 const app = express();
 dotenv.config();
 
@@ -40,7 +39,7 @@ app.post('/', async (req, res) => {
     const file_name = copilot_references[0].id;
 
     // Request to CAPI for function call and it's argument
-    const { message } = await prompt("create a gist", {
+    const {message} = await prompt("create a gist", {
         model: "gpt-4o",
         token: token,
         system: "Using the tool call, You are a helpful assistant who can create a Gist for the block of codes in the context from VS Code on behalf of the user.",
@@ -75,7 +74,7 @@ app.post('/', async (req, res) => {
 
     // Convert the message object to a JSON string
     const messageString = JSON.stringify(message);
-
+ 
     // Parse the accumulated data as JSON
     const jsonResponse = JSON.parse(messageString);
     console.log(jsonResponse);
@@ -111,11 +110,6 @@ app.post('/', async (req, res) => {
     }
     // End the response
     res.end();
-    
-    // } else {
-    //     // If the request is not verified, send an error response
-    //     res.status(401).send('Unauthorized');
-    // }
     
 });
 
